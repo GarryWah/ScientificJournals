@@ -11,11 +11,18 @@ import java.util.List;
  */
 public interface JournalTitleService {
     List<JournalTitle> findAll();
+
     void delete(int id);
+
     JournalTitle loadedTitle(int id);
+
     JournalTitle findByName(String name);
+
     List<JournalTitle> findByCategoryId(Integer id);
+
     void save(JournalTitle title);
+
     void deleteVolume(int id, int journalId);
+
     Page<JournalTitle> findAll(Pageable pageable);
 }

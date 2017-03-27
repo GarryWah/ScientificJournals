@@ -19,6 +19,7 @@ import java.util.List;
 public class JournalServiceImpl implements JournalService {
     @Autowired
     private JournalRepository journalRepository;
+
     @Override
     public List<Journal> findAll() {
         return journalRepository.findAll();
@@ -38,7 +39,7 @@ public class JournalServiceImpl implements JournalService {
 
     @Override
     public void save(JournalForm journalForm) {
-        Journal journal=new Journal();
+        Journal journal = new Journal();
         journal.setId(journalForm.getId());
         journal.setTitle(journalForm.getTitle());
         journal.setVolume(Integer.parseInt(journalForm.getVolume()));
@@ -48,12 +49,12 @@ public class JournalServiceImpl implements JournalService {
     }
 
     @Override
-    public JournalForm findByVolumeAndYear(JournalTitle title,Integer volume, Integer year) {
-        Journal journal=null;
-        JournalForm journalForm=new JournalForm();
-        for (Journal j:findAll()){
-            if(j.getTitle().equals(title)&&j.getVolume().equals(volume)&&j.getYear().equals(year)){
-                journal=j;
+    public JournalForm findByVolumeAndYear(JournalTitle title, Integer volume, Integer year) {
+        Journal journal = null;
+        JournalForm journalForm = new JournalForm();
+        for (Journal j : findAll()) {
+            if (j.getTitle().equals(title) && j.getVolume().equals(volume) && j.getYear().equals(year)) {
+                journal = j;
                 journalForm.setId(journal.getId());
                 journalForm.setTitle(journal.getTitle());
                 journalForm.setVolume(String.valueOf(journal.getVolume()));

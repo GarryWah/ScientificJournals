@@ -2,6 +2,7 @@ package ua.dto;
 
 import ua.entity.JournalTitle;
 import ua.entity.Order;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class JournalForm {
     private String year;
     private String price;
 
-    List<Order> inOrders=new ArrayList<Order>();
+    List<Order> inOrders = new ArrayList<Order>();
 
     public JournalForm() {
     }
@@ -67,5 +68,27 @@ public class JournalForm {
 
     public void setInOrders(List<Order> inOrders) {
         this.inOrders = inOrders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JournalForm that = (JournalForm) o;
+
+        if (!getTitle().equals(that.getTitle())) return false;
+        if (!getVolume().equals(that.getVolume())) return false;
+        if (!getYear().equals(that.getYear())) return false;
+        return getPrice().equals(that.getPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getTitle().hashCode();
+        result = 31 * result + getVolume().hashCode();
+        result = 31 * result + getYear().hashCode();
+        result = 31 * result + getPrice().hashCode();
+        return result;
     }
 }

@@ -14,10 +14,15 @@ import java.util.List;
  */
 public interface JournalService {
     List<Journal> findAll();
+
     void delete(int id);
+
     Journal findOne(int id);
+
     void save(JournalForm journalForm);
+
     Page<Journal> findAll(Pageable pageable);
+
     JournalForm findByVolumeAndYear(JournalTitle title, Integer volume, Integer year);
 
 }

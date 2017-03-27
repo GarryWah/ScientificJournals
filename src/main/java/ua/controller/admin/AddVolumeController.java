@@ -29,7 +29,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Controller
 @RequestMapping("/admin/title/show/journal/{id}")
-@SessionAttributes(names="Add")
+@SessionAttributes(names = "Add")
 public class AddVolumeController {
     @Autowired
     private JournalTitleService journalTitleService;
@@ -39,27 +39,30 @@ public class AddVolumeController {
     private CategoryService categoryService;
 
     @ModelAttribute("Add")
-    public JournalForm getForm(){
+    public JournalForm getForm() {
         return new JournalForm();
     }
+
     @InitBinder("Add")
-    protected void initBinder(WebDataBinder binder){
+    protected void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(JournalTitle.class, new JournalTitleEditor(journalTitleService));
         binder.registerCustomEditor(Category.class, new CategoryEditor(categoryService));
         binder.setValidator(new JournalFormValidator(journalService));
     }
+
     @RequestMapping
-    public String show(@PathVariable int id,Model model){
+    public String show(@PathVariable int id, Model model) {
         JournalTitle journalTitle = journalTitleService.loadedTitle(id);
         model.addAttribute("journalTitle", journalTitle);
         List<Journal> journals = journalTitle.getJournals();
         model.addAttribute("journals", journals);
         return "/admin/showJournals";
     }
-    @RequestMapping(method=POST)
-    public String addVolume(@ModelAttribute("Add") @Valid JournalForm journalForm, BindingResult br, Model model, SessionStatus status, @PathVariable int id){
-        if(br.hasErrors()){
-            show(id,model);
+
+    @RequestMapping(method = POST)
+    public String addVolume(@ModelAttribute("Add") @Valid JournalForm journalForm, BindingResult br, Model model, SessionStatus status, @PathVariable int id) {
+        if (br.hasErrors()) {
+            show(id, model);
             return "/admin/showJournals";
         }
         JournalTitle journalTitle = journalTitleService.loadedTitle(id);
@@ -68,30 +71,32 @@ public class AddVolumeController {
         status.setComplete();
         return "redirect:/admin/title/show/journal/{id}";
     }
+
     @RequestMapping("/delete/{journalId}")
-    public String deleteVolume(@PathVariable int journalId){
+    public String deleteVolume(@PathVariable int journalId) {
         journalService.delete(journalId);
         return "redirect:/admin/title/show/journal/{id}";
     }
+
     @RequestMapping("/update/{journalId}")
-    public String update(@PathVariable int journalId,@PathVariable int id,Model model){
-        JournalForm journalForm=new JournalForm();
-        Journal journal=journalService.findOne(journalId);
+    public String update(@PathVariable int journalId, @PathVariable int id, Model model) {
+        JournalForm journalForm = new JournalForm();
+        Journal journal = journalService.findOne(journalId);
         journalForm.setId(journal.getId());
         journalForm.setTitle(journal.getTitle());
         journalForm.setVolume(String.valueOf(journal.getVolume()));
         journalForm.setYear(String.valueOf(journal.getYear()));
         journalForm.setPrice(String.valueOf(journal.getPrice()));
         model.addAttribute("Add", journalForm);
-        show(id,model);
+        show(id, model);
         return "/admin/showJournals";
     }
+
     @RequestMapping("/cancel")
-    public String cancel(@PathVariable int id,SessionStatus status){
+    public String cancel(@PathVariable int id, SessionStatus status) {
         status.setComplete();
         return "redirect:/admin/title/show/journal/{id}";
     }
-
 
 
 }

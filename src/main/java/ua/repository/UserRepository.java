@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT distinct u FROM User u LEFT JOIN FETCH u.orders WHERE "
             + "u.id=:id")
     User loadedUser(@Param("id") Integer id);
+
     User findByEmail(String email);
+
     Page<User> findAll(Pageable pageable);
 }

@@ -15,31 +15,36 @@ import ua.service.OrderService;
  */
 @Controller
 @RequestMapping("/admin/orders")
-@SessionAttributes(names="forms")
+@SessionAttributes(names = "forms")
 public class OrderController {
     @Autowired
     private OrderService orderService;
+
     @ModelAttribute("form")
-    public Order getForm(){
+    public Order getForm() {
         return new Order();
     }
+
     @RequestMapping
-    public String show(Model model){
-        model.addAttribute("orders",orderService.findAll());
+    public String show(Model model) {
+        model.addAttribute("orders", orderService.findAll());
         return "order";
     }
+
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable int id){
+    public String delete(@PathVariable int id) {
         orderService.delete(id);
         return "redirect:/admin/order";
     }
+
     @RequestMapping("/find/{id}")
-    public String findById(@PathVariable int id){
+    public String findById(@PathVariable int id) {
         orderService.findOne(id);
         return "order";
     }
-    public String update(@PathVariable int id,Model model){
-        model.addAttribute("form",orderService.findAll());
+
+    public String update(@PathVariable int id, Model model) {
+        model.addAttribute("form", orderService.findAll());
         return "order";
     }
 }

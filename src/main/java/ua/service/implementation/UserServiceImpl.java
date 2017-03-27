@@ -36,17 +36,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void delete(int id) {
-              userRepository.delete(id);
+        userRepository.delete(id);
     }
 
     @Override
     public User findOne(Integer id) {
-           return userRepository.loadedUser(id);
+        return userRepository.loadedUser(id);
     }
 
     @Override
     public User findByUsername(String username) {
-        return (User)loadUserByUsername(username);
+        return (User) loadUserByUsername(username);
     }
 
     public UserRepository getUserRepository() {
@@ -71,10 +71,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setRole(Role.ROLE_USER);
         userRepository.save(user);
     }
+
     @PostConstruct
-    public void admin(){
+    public void admin() {
         User user = userRepository.findByUsername("admin");
-        if(user==null){
+        if (user == null) {
             user = new User();
             user.setEmail("");
             user.setPassword(encoder.encode("admin"));
@@ -83,7 +84,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             userRepository.save(user);
         }
     }
-
 
 
     @Override

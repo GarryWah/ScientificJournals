@@ -17,10 +17,12 @@ public interface JournalRepository extends JpaRepository<Journal, Integer> {
 
     @Query("SELECT j FROM Journal j LEFT JOIN FETCH j.title jt LEFT JOIN FETCH jt.category where j.id=:id")
     Journal findOne(@Param("id") Integer id);
+
     @Query("SELECT j FROM Journal j LEFT JOIN FETCH j.title jt LEFT JOIN FETCH jt.category")
     List<Journal> findAll();
-    @Query(value="SELECT j FROM Journal j LEFT JOIN FETCH j.title jt LEFT JOIN FETCH jt.category",
-            countQuery="SELECT count(j.id) FROM Journal j")
+
+    @Query(value = "SELECT j FROM Journal j LEFT JOIN FETCH j.title jt LEFT JOIN FETCH jt.category",
+            countQuery = "SELECT count(j.id) FROM Journal j")
     Page<Journal> findAll(Pageable pageable);
 
 }

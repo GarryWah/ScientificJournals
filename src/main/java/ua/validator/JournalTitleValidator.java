@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class JournalTitleValidator implements Validator {
     private final JournalTitleService journalTitleService;
-    private final static Pattern PATTERN =Pattern.compile("^[^\\d]+$");
+    private final static Pattern PATTERN = Pattern.compile("^[^\\d]+$");
 
     public JournalTitleValidator(JournalTitleService journalTitleService) {
         this.journalTitleService = journalTitleService;
@@ -28,15 +28,15 @@ public class JournalTitleValidator implements Validator {
     @Override
 
     public void validate(Object o, Errors errors) {
-        JournalTitle journalTitle=(JournalTitle) o;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"name","","Can't be empty!");
-        if (journalTitle.getId()==null) {
-            if(journalTitleService.findByName(journalTitle.getName())!=null){
-            errors.rejectValue("name","","Already exists!");
-        }
+        JournalTitle journalTitle = (JournalTitle) o;
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "", "Can't be empty!");
+        if (journalTitle.getId() == null) {
+            if (journalTitleService.findByName(journalTitle.getName()) != null) {
+                errors.rejectValue("name", "", "Already exists!");
+            }
 
-            if (!journalTitle.getName().equals("")&&!PATTERN.matcher(journalTitle.getName()).matches()){
-                errors.rejectValue("name","","Category not include digits!");
+            if (!journalTitle.getName().equals("") && !PATTERN.matcher(journalTitle.getName()).matches()) {
+                errors.rejectValue("name", "", "Category not include digits!");
             }
         }
     }

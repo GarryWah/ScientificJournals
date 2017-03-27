@@ -8,17 +8,17 @@ import java.util.List;
  * Created by Admin on 1/19/2017.
  */
 @Entity
-@Table(name="category")
+@Table(name = "category")
 public class Category {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     private String name;
     @OneToMany
-    (mappedBy = "category", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    private List<JournalTitle> titles=new ArrayList<JournalTitle>();
+            (mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<JournalTitle> titles = new ArrayList<JournalTitle>();
 
     public Category() {
     }
@@ -30,7 +30,8 @@ public class Category {
     public void setId(Integer id) {
         this.id = id;
     }
-    @Column(name="name")
+
+    @Column(name = "name")
     public String getName() {
         return name;
     }

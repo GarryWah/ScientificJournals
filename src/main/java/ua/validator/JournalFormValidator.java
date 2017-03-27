@@ -13,14 +13,15 @@ import java.util.regex.Pattern;
  */
 public class JournalFormValidator implements Validator {
 
-    private final static Pattern VOLUME =Pattern.compile("^\\d{1,4}$");
-    private final static Pattern YEAR =Pattern.compile("^\\d{4}$");
-    private final static Pattern PRICE =Pattern.compile("^\\d+$");
+    private final static Pattern VOLUME = Pattern.compile("^\\d{1,4}$");
+    private final static Pattern YEAR = Pattern.compile("^\\d{4}$");
+    private final static Pattern PRICE = Pattern.compile("^\\d+$");
     private final JournalService journalService;
 
-    public JournalFormValidator(JournalService journalService){
+    public JournalFormValidator(JournalService journalService) {
         this.journalService = journalService;
     }
+
     @Override
     public boolean supports(Class<?> clazz) {
         return JournalForm.class.equals(clazz);
@@ -28,30 +29,29 @@ public class JournalFormValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        JournalForm journal=(JournalForm) o;
+        JournalForm journal = (JournalForm) o;
 
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors,"volume","","Can't be empty!");
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors,"year","","Can't be empty!");
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors,"price","","Can't be empty!");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "volume", "", "Can't be empty!");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "year", "", "Can't be empty!");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "", "Can't be empty!");
 
 
+        JournalForm foundedJournal = journalService.findByVolumeAndYear(journal.getTitle(), Integer.parseInt(journal.getVolume()),
+                Integer.parseInt(journal.getYear()));
+        if (foundedJournal != null && foundedJournal.equals(journal)) {
 
-        if(journal.getId()==null){
-            JournalForm foundedJournal=journalService.findByVolumeAndYear(journal.getTitle(),Integer.parseInt(journal.getVolume()),
-                    Integer.parseInt(journal.getYear()));
-            if(foundedJournal!=null) {
-                errors.rejectValue("volume", "", "Already exists!");
-                errors.rejectValue("year", "", "Already exists!");
-            }
+            errors.rejectValue("volume", "", "Already exists!");
+            errors.rejectValue("year", "", "Already exists!");
         }
-            if (!VOLUME.matcher(journal.getVolume()).matches()){
-                errors.rejectValue("volume","","Volume include not more than 4 digits and could not be zero!");
-            }
-            if (!YEAR.matcher(journal.getYear()).matches()){
-                errors.rejectValue("year","","Year include only 4 digits and could not be zero!");
-            }
-            if (!PRICE.matcher(journal.getPrice()).matches()){
-                errors.rejectValue("price","","This is not a price!");
-            }
+
+        if (!VOLUME.matcher(journal.getVolume()).matches()) {
+            errors.rejectValue("volume", "", "Volume include not more than 4 digits and could not be zero!");
+        }
+        if (!YEAR.matcher(journal.getYear()).matches()) {
+            errors.rejectValue("year", "", "Year include only 4 digits and could not be zero!");
+        }
+        if (!PRICE.matcher(journal.getPrice()).matches()) {
+            errors.rejectValue("price", "", "This is not a price!");
+        }
     }
 }

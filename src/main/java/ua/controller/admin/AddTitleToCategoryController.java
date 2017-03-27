@@ -24,35 +24,38 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Controller
 @RequestMapping("/admin/category/show/title/{id}")
-@SessionAttributes(names="TitleToCategory")
+@SessionAttributes(names = "TitleToCategory")
 public class AddTitleToCategoryController {
     @Autowired
     private JournalTitleService journalTitleService;
     @Autowired
     private CategoryService categoryService;
+
     @ModelAttribute("TitleToCategory")
-    public JournalTitle getForm(){
+    public JournalTitle getForm() {
         return new JournalTitle();
     }
+
     @InitBinder("TitleToCategory")
-    protected void initBinder(WebDataBinder binder){
+    protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new JournalTitleValidator(journalTitleService));
         binder.registerCustomEditor(Category.class, new CategoryEditor(categoryService));
     }
 
 
     @RequestMapping
-    public String show(@PathVariable int id,Model model){
+    public String show(@PathVariable int id, Model model) {
         Category category = categoryService.loadedCategory(id);
         model.addAttribute("category", category);
         List<JournalTitle> titles = category.getTitles();
         model.addAttribute("titles", titles);
         return "/admin/showJournalTitlesByCategory";
     }
-    @RequestMapping(method=POST)
-    public String addTitle(@ModelAttribute("TitleToCategory") @Valid JournalTitle journalTitle, BindingResult br, SessionStatus status, Model model, @PathVariable int id){
-        if(br.hasErrors()){
-            show(id,model);
+
+    @RequestMapping(method = POST)
+    public String addTitle(@ModelAttribute("TitleToCategory") @Valid JournalTitle journalTitle, BindingResult br, SessionStatus status, Model model, @PathVariable int id) {
+        if (br.hasErrors()) {
+            show(id, model);
             return "/admin/showJournalTitlesByCategory";
         }
         journalTitle.setCategory(categoryService.findOne(id));
@@ -60,19 +63,22 @@ public class AddTitleToCategoryController {
         status.setComplete();
         return "redirect:/admin/category/show/title/{id}";
     }
+
     @RequestMapping("/delete/{titleId}")
-    public String deleteTitle(@PathVariable int titleId){
+    public String deleteTitle(@PathVariable int titleId) {
         journalTitleService.delete(titleId);
         return "redirect:/admin/category/show/title/{id}";
     }
+
     @RequestMapping("/update/{titleId}")
-    public String update(@PathVariable int titleId,@PathVariable int id,Model model){
-        model.addAttribute("TitleToCategory",journalTitleService.loadedTitle(titleId));
-        show(id,model);
+    public String update(@PathVariable int titleId, @PathVariable int id, Model model) {
+        model.addAttribute("TitleToCategory", journalTitleService.loadedTitle(titleId));
+        show(id, model);
         return "/admin/showJournalTitlesByCategory";
     }
+
     @RequestMapping("/cancel")
-    public String cancel(@PathVariable int id,SessionStatus status){
+    public String cancel(@PathVariable int id, SessionStatus status) {
         status.setComplete();
         return "redirect:/admin/category/show/title/{id}";
     }

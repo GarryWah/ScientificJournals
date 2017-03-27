@@ -30,8 +30,8 @@ import static ua.util.ParamBuilder.buildParams;
  */
 @Controller
 @RequestMapping("/admin/journal")
-@SessionAttributes(names="journal")
-public  class JournalController {
+@SessionAttributes(names = "journal")
+public class JournalController {
     @Autowired
     private JournalService journalService;
     @Autowired
@@ -40,59 +40,66 @@ public  class JournalController {
     private CategoryService categoryService;
 
     @ModelAttribute("journal")
-    public JournalForm getForm(){
+    public JournalForm getForm() {
         return new JournalForm();
     }
+
     @InitBinder("journal")
-    protected void initBinder(WebDataBinder binder){
+    protected void initBinder(WebDataBinder binder) {
 
         binder.registerCustomEditor(JournalTitle.class, new JournalTitleEditor(journalTitleService));
         binder.registerCustomEditor(Category.class, new CategoryEditor(categoryService));
         binder.setValidator(new JournalFormValidator(journalService));
     }
+
     @RequestMapping
-    public String show(Model model, @PageableDefault Pageable pageable){
+    public String show(Model model, @PageableDefault Pageable pageable) {
         model.addAttribute("journals", journalService.findAll(pageable));
-        model.addAttribute("titles",journalTitleService.findAll());
+        model.addAttribute("titles", journalTitleService.findAll());
         return "admin/journal";
     }
+
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable int id, @PageableDefault Pageable pageable){
+    public String delete(@PathVariable int id, @PageableDefault Pageable pageable) {
         journalService.delete(id);
-        return "redirect:/admin/journal"+buildParams(pageable);
+        return "redirect:/admin/journal" + buildParams(pageable);
     }
+
     @RequestMapping("/find/{id}")
-    public String findById(@PathVariable int id, @PageableDefault Pageable pageable){
+    public String findById(@PathVariable int id, @PageableDefault Pageable pageable) {
         journalService.findOne(id);
         return "admin/journal";
     }
-    @RequestMapping(method=POST)
-    public String save(@ModelAttribute("journal") @Valid JournalForm journalForm, BindingResult br, SessionStatus status, Model model, @PageableDefault Pageable pageable){
-        if(br.hasErrors()){
+
+    @RequestMapping(method = POST)
+    public String save(@ModelAttribute("journal") @Valid JournalForm journalForm, BindingResult br, SessionStatus status, Model model, @PageableDefault Pageable pageable) {
+        if (br.hasErrors()) {
             model.addAttribute("journals", journalService.findAll(pageable));
-            model.addAttribute("titles",journalTitleService.findAll());
+            model.addAttribute("titles", journalTitleService.findAll());
             return "admin/journal";
         }
         journalService.save(journalForm);
         status.setComplete();
-        return "redirect:/admin/journal"+buildParams(pageable);
+        return "redirect:/admin/journal" + buildParams(pageable);
     }
+
     @RequestMapping("/update/{id}")
-    public String update(@PathVariable int id,Model model, @PageableDefault Pageable pageable){
-        JournalForm journalForm=new JournalForm();
-        Journal journal=journalService.findOne(id);
+    public String update(@PathVariable int id, Model model, @PageableDefault Pageable pageable) {
+        JournalForm journalForm = new JournalForm();
+        Journal journal = journalService.findOne(id);
         journalForm.setId(journal.getId());
         journalForm.setTitle(journal.getTitle());
         journalForm.setVolume(String.valueOf(journal.getVolume()));
         journalForm.setYear(String.valueOf(journal.getYear()));
         journalForm.setPrice(String.valueOf(journal.getPrice()));
         model.addAttribute("journal", journalForm);
-        show(model,pageable);
+        show(model, pageable);
         return "admin/journal";
     }
+
     @RequestMapping("/cancel")
-    public String cancel(SessionStatus status, @PageableDefault Pageable pageable){
+    public String cancel(SessionStatus status, @PageableDefault Pageable pageable) {
         status.setComplete();
-        return "redirect:/admin/journal"+buildParams(pageable);
+        return "redirect:/admin/journal" + buildParams(pageable);
     }
 }

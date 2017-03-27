@@ -12,10 +12,16 @@ import java.util.List;
  */
 public interface UserService {
     List<User> findAll();
+
     void delete(int id);
+
     User findOne(Integer id);
+
     User findByUsername(String username);
+
     void save(User user);
+
     User findByEmail(String email);
+
     Page<User> findAll(Pageable pageable);
 }

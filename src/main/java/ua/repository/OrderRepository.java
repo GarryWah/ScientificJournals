@@ -15,6 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.user LEFT JOIN FETCH o.journal j LEFT JOIN FETCH " +
             "j.title WHERE o.id=:id")
     Order findOne(@Param("id") Integer id);
+
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.user LEFT JOIN FETCH o.journal j LEFT JOIN FETCH " +
             "j.title")
     List<Order> findAll(@Param("id") Integer id);

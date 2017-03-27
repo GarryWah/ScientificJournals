@@ -25,54 +25,59 @@ import static ua.util.ParamBuilder.buildParams;
  */
 @Controller
 @RequestMapping("/admin/title")
-@SessionAttributes(names="Title")
+@SessionAttributes(names = "Title")
 public class JournalTitleController {
     @Autowired
     private JournalTitleService journalTitleService;
     @Autowired
     private CategoryService categoryService;
+
     @ModelAttribute("Title")
-    public JournalTitle getForm(){
+    public JournalTitle getForm() {
         return new JournalTitle();
     }
+
     @InitBinder("Title")
-    protected void initBinder(WebDataBinder binder){
+    protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new JournalTitleValidator(journalTitleService));
         binder.registerCustomEditor(Category.class, new CategoryEditor(categoryService));
     }
 
     @RequestMapping
-    public String show(Model model, @PageableDefault Pageable pageable){
-        model.addAttribute("titles",journalTitleService.findAll(pageable));
+    public String show(Model model, @PageableDefault Pageable pageable) {
+        model.addAttribute("titles", journalTitleService.findAll(pageable));
         model.addAttribute("categories", categoryService.findAll());
         return "admin/title";
     }
+
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable int id, @PageableDefault Pageable pageable){
+    public String delete(@PathVariable int id, @PageableDefault Pageable pageable) {
         journalTitleService.delete(id);
-        return "redirect:/admin/title"+buildParams(pageable);
+        return "redirect:/admin/title" + buildParams(pageable);
     }
-    @RequestMapping(method=POST)
-    public String save(@ModelAttribute("Title") @Valid JournalTitle title, BindingResult br, SessionStatus status,Model model, @PageableDefault Pageable pageable){
-        if(br.hasErrors()){
-            model.addAttribute("titles",journalTitleService.findAll());
+
+    @RequestMapping(method = POST)
+    public String save(@ModelAttribute("Title") @Valid JournalTitle title, BindingResult br, SessionStatus status, Model model, @PageableDefault Pageable pageable) {
+        if (br.hasErrors()) {
+            model.addAttribute("titles", journalTitleService.findAll());
             model.addAttribute("categories", categoryService.findAll());
             return "admin/title";
         }
         journalTitleService.save(title);
         status.setComplete();
-        return "redirect:/admin/title"+buildParams(pageable);
+        return "redirect:/admin/title" + buildParams(pageable);
     }
+
     @RequestMapping("/update/{id}")
-    public String update(@PathVariable int id,Model model, @PageableDefault Pageable pageable){
-        model.addAttribute("Title",journalTitleService.loadedTitle(id));
-        show(model,pageable);
+    public String update(@PathVariable int id, Model model, @PageableDefault Pageable pageable) {
+        model.addAttribute("Title", journalTitleService.loadedTitle(id));
+        show(model, pageable);
         return "/admin/title";
     }
 
     @RequestMapping("/cancel")
-    public String cancel(SessionStatus status, @PageableDefault Pageable pageable){
+    public String cancel(SessionStatus status, @PageableDefault Pageable pageable) {
         status.setComplete();
-        return "redirect:/admin/title"+buildParams(pageable);
+        return "redirect:/admin/title" + buildParams(pageable);
     }
 }

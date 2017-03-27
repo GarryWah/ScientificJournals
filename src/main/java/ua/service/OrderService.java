@@ -10,7 +10,10 @@ import java.util.List;
  */
 public interface OrderService {
     List<Order> findAll();
+
     void delete(int id);
+
     Order findOne(Integer id);
+
     void save(Order order);
 }

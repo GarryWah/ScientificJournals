@@ -31,7 +31,6 @@ public class JournalTitleServiceImpl implements JournalTitleService {
     }
 
 
-
     @Override
     public void delete(int id) {
         journalTitleRepository.delete(id);
@@ -66,13 +65,12 @@ public class JournalTitleServiceImpl implements JournalTitleService {
     @Override
     @Transactional
     public void deleteVolume(int id, int journalId) {
-        JournalTitle title=journalTitleRepository.findOne(id);
-        Journal journal=journalRepository.findOne(journalId);
-        title.getJournals().removeIf(s->s.getId()==journalId);
+        JournalTitle title = journalTitleRepository.findOne(id);
+        Journal journal = journalRepository.findOne(journalId);
+        title.getJournals().removeIf(s -> s.getId() == journalId);
         journalRepository.delete(journalId);
         journalTitleRepository.save(title);
     }
-
 
 
     @Override

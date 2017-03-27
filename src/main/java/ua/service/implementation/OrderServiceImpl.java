@@ -16,6 +16,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -31,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
     public Order findOne(Integer id) {
         return orderRepository.findOne(id);
     }
+
     @Override
     public void save(Order order) {
         orderRepository.save(order);

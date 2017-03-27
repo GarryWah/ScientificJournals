@@ -12,12 +12,20 @@ import java.util.List;
  */
 public interface CategoryService {
     List<Category> findAll();
+
     void delete(int id);
+
     Category findOne(int id);
+
     Category findByName(String name);
+
     void save(Category category);
+
     void addTitle(int id, int titleId);
+
     void deleteTitle(int id, int titleId);
+
     Category loadedCategory(Integer id);
+
     Page<Category> findAll(Pageable pageable);
 }

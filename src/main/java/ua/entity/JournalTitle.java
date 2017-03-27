@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Admin on 1/19/2017.
  */
 @Entity
-@Table(name="title")
+@Table(name = "title")
 public class JournalTitle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +19,8 @@ public class JournalTitle {
     private String description;
 
     @OneToMany
-    (mappedBy = "title",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
-    private List<Journal> journals=new ArrayList<Journal>();
+            (mappedBy = "title", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Journal> journals = new ArrayList<Journal>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")

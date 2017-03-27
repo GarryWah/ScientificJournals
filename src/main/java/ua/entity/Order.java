@@ -4,39 +4,39 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="bucket")
-@NamedQuery(name="order.findAll",query = "SELECT o from Order o")
+@Table(name = "bucket")
+@NamedQuery(name = "order.findAll", query = "SELECT o from Order o")
 public class Order {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
-	private User user;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "journal_id")
-	private Journal journal;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
     @Column(name = "dateofpay")
-	Date dateOfPay;
+    Date dateOfPay;
 
     public Order() {
     }
 
     public Integer getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Date getDateOfPay() {
-		return dateOfPay;
-	}
+    public Date getDateOfPay() {
+        return dateOfPay;
+    }
 
-	public void setDateOfPay(Date dateOfPay) {
-		this.dateOfPay = dateOfPay;
-	}
+    public void setDateOfPay(Date dateOfPay) {
+        this.dateOfPay = dateOfPay;
+    }
 
     public User getUser() {
         return user;
@@ -54,13 +54,13 @@ public class Order {
         this.journal = journal;
     }
 
-	@Override
-	public String toString() {
-		return "Order{" +
-				"id=" + id +
-				", user=" + user +
-				", journal=" + journal +
-				", dateOfPay=" + dateOfPay +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", user=" + user +
+                ", journal=" + journal +
+                ", dateOfPay=" + dateOfPay +
+                '}';
+    }
 }

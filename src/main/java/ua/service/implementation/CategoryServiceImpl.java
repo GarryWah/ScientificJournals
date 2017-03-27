@@ -26,6 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private JournalTitleRepository journalTitleRepository;
+
     @Override
     public List<Category> findAll() {
         return categoryRepository.findAll();
@@ -53,23 +54,25 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
 
     }
+
     @Override
     @Transactional
     public void addTitle(int id, int titleId) {
-        Category category=categoryRepository.loadedCategory(id);
-        JournalTitle journalTitle=journalTitleRepository.loadedTitle(titleId);
+        Category category = categoryRepository.loadedCategory(id);
+        JournalTitle journalTitle = journalTitleRepository.loadedTitle(titleId);
         category.getTitles().add(journalTitle);
         categoryRepository.save(category);
         journalTitleRepository.save(journalTitle);
 
     }
+
     @Override
     @Transactional
     public void deleteTitle(int id, int titleId) {
-        Category category=categoryRepository.loadedCategory(id);
-        JournalTitle journalTitle=journalTitleRepository.loadedTitle(titleId);
-        category.getTitles().removeIf(s->s.getId()==titleId);
-       journalTitleRepository.delete(titleId);
+        Category category = categoryRepository.loadedCategory(id);
+        JournalTitle journalTitle = journalTitleRepository.loadedTitle(titleId);
+        category.getTitles().removeIf(s -> s.getId() == titleId);
+        journalTitleRepository.delete(titleId);
         categoryRepository.save(category);
         journalTitleRepository.save(journalTitle);
     }

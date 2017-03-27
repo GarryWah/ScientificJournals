@@ -16,29 +16,29 @@ import java.util.List;
  * Created by Admin on 1/5/2017.
  */
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
-    @Column(name="_name")
+    @Column(name = "_name")
     private String username;
-    @Column(name="firstname")
+    @Column(name = "firstname")
     private String firstName;
-    @Column(name="lastname")
+    @Column(name = "lastname")
     private String lastName;
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
-    @Column(name="phone")
+    @Column(name = "phone")
     private Integer phone;
-    @Column(name="role")
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
-    private List<Order> orders=new ArrayList<Order>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Order> orders = new ArrayList<Order>();
 
 
     public User() {
@@ -83,7 +83,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities=new ArrayList<>();
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(role.name()));
         return grantedAuthorities;
     }
@@ -119,6 +119,7 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public Integer getPhone() {
         return phone;
     }

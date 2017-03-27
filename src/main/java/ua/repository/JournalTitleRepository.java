@@ -30,8 +30,9 @@ public interface JournalTitleRepository extends JpaRepository<JournalTitle, Inte
     List<JournalTitle> findAll();
 
     JournalTitle findByName(String name);
-    @Query(value="SELECT t FROM JournalTitle t LEFT JOIN FETCH t.category",
-            countQuery="SELECT count(t.id) FROM JournalTitle t")
+
+    @Query(value = "SELECT t FROM JournalTitle t LEFT JOIN FETCH t.category",
+            countQuery = "SELECT count(t.id) FROM JournalTitle t")
     Page<JournalTitle> findAll(Pageable pageable);
 
 

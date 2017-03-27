@@ -1,5 +1,6 @@
 package ua.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,54 +24,64 @@ import java.security.Principal;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
-@SessionAttributes(names="userForm")
+@SessionAttributes(names = "userForm")
 public class IndexController {
+    private static final Logger LOGGER = Logger.getLogger(IndexController.class);
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@InitBinder("userForm")
-	protected void initBinder(WebDataBinder binder){
-		binder.setValidator(new UserValidator(userService));
-	}
+    @InitBinder("userForm")
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(new UserValidator(userService));
+    }
 
-	@RequestMapping("/")
-	public String index(Principal principal){
-	//    principal.getName();
-		return "user/index";
-	}
+    @RequestMapping("/")
+    public String index(Principal principal) {
 
-	@RequestMapping("/admin")
-	public String admin(){
-		return "admin/admin";
-	}
-	@RequestMapping("/user")
-	public String user(){
-		return "user/user";
-	}
+        //logs debug message
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("index is executed!");
+        }
 
-	@RequestMapping("/login")
-	public String login(){
-		return "user/login";
-	}
+        //logs exception
+        //   LOGGER.error("This is Error message", new Exception("Testing"));
+        //    principal.getName();
+        return "user/index";
+    }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping("/admin")
+    public String admin() {
+        return "admin/admin";
+    }
+
+    @RequestMapping("/user")
+    public String user() {
+        return "user/user";
+    }
+
+    @RequestMapping("/login")
+    public String login() {
+        return "user/login";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/user/login";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
     }
 
-	@RequestMapping("/registration")
-	public String registration(Model model){
-		model.addAttribute("userForm", new User());
-		return "user/registration";
-	}
+    @RequestMapping("/registration")
+    public String registration(Model model) {
+        model.addAttribute("userForm", new User());
+        return "user/registration";
+    }
 
-	@RequestMapping(value="/registration", method=POST)
-	public String registration(@ModelAttribute("userForm") @Valid User user, BindingResult br, SessionStatus status, Model model){
+    @RequestMapping(value = "/registration", method = POST)
+    public String registration(@ModelAttribute("userForm") @Valid User user, BindingResult br, SessionStatus status, Model model) {
 
         if (br.hasErrors()) {
             return "user/registration";
@@ -78,5 +89,5 @@ public class IndexController {
         userService.save(user);
         status.setComplete();
         return "redirect:user/index";
-	}
+    }
 }
