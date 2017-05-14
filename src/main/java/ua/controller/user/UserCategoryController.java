@@ -47,7 +47,7 @@ public class UserCategoryController {
     @Controller
     @RequestMapping("/user/title/show/journal/{id}")
     @SessionAttributes(names="Volume")
-    public static class UserListOfVolumesController {
+     static class UserListOfVolumesController {
         @Autowired
         private JournalTitleService journalTitleService;
         @Autowired
